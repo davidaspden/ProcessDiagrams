@@ -1,0 +1,91 @@
+title: Pre Buffer Problem Detection {
+  near: top-center
+  shape: text
+  style: {
+    font-size: 29
+    bold: true
+    underline: true
+  }
+}
+
+ProblemSolver: {
+  shape: person
+  width: 130
+  height: 130
+  style: {
+    stroke: green
+  }
+}
+
+ProblemSolver -> fix.1: No Diagnosis
+ProblemSolver -> fix.2: Manual Diagnosis
+direction: right
+diagnose: Auto Diagnose {
+  style: {
+    fill: "#959500"
+    opacity: 0.5
+  }
+  Detectable with FCResearch: {
+    problem1: multiple items
+    problem2: virtually empty
+  }
+  Detectable with CX Hunter: {
+    direction: right
+    problem3: QS
+    problem4: Fud
+  }
+  No issue: {
+    All good
+  }
+}
+
+incoming: {
+  shape: queue
+}
+
+labelled
+
+fix: {
+  1: Simple fix
+  2: Harder fix
+}
+unfixable: {
+  shape: cylinder
+}
+
+station: Manual Stations {
+  station1: {
+    shape: person
+    style: {
+      fill: green
+    }
+  }
+  station2: {
+    shape: person
+    style: {
+      fill: red
+    }
+  }
+  station3: {
+    shape: person
+    style: {
+      fill: green
+    }
+  }
+}
+buffer
+diagnose.Detectable with FCResearch -> labelled: Print Diagnostic Info with tote ID.
+diagnose.Detectable with CX Hunter -> labelled: Print Diagnostic Info with tote ID.
+ProblemSolver -> unfixable: Other issue
+labelled -> ProblemSolver: Simplified, no intelligence lost.
+fix.1 -> buffer: Continue to buffer
+fix.2 -> buffer: Continue to buffer
+diagnose.No issue -> buffer: Nothing detectable
+incoming -> diagnose: From kickouts
+incoming -> buffer: The old way / Automatics.
+buffer -> station: Travel to station now required.
+station.station2 -> ProblemSolver: A problem that we missed.
+(station.station2 -> ProblemSolver)[0]: {
+  style: {stroke-dash: 5}
+}
+fix.2 -> unfixable: Excetion spotted.
